@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import me.amasiero.balancecontrol.domain.dto.TransactionDto;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,4 +33,16 @@ public class Transaction {
     private LocalDate date;
     @ManyToOne
     private Account account;
+
+    @Component
+    public static class FromTransationDto {
+        public Transaction apply(TransactionDto transactionDto) {
+            return Transaction.builder()
+                    .description(transactionDto.getDescription())
+                    .amount(transactionDto.getAmount())
+                    .type(TransactionType.valueOf(transactionDto.getType().toUpperCase()))
+                    .date(transactionDto.getDate())
+                    .build();
+        }
+    }
 }

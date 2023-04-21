@@ -17,6 +17,7 @@ public class AccountServiceImpl implements AccountService {
 
     private AccountRepository accountRepository;
     private AccountDto.FromAccount fromAccount;
+    private Account.FromAccountDto fromAccountDto;
 
     @Override
     public Set<AccountDto> getAll() {
@@ -35,6 +36,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountDto create(AccountDto accountDto) {
-        return null;
+        Account account = fromAccountDto.apply(accountDto);
+        return fromAccount.apply(accountRepository.save(account));
     }
 }
