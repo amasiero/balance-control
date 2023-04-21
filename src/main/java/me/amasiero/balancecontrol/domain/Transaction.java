@@ -5,13 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import me.amasiero.balancecontrol.domain.dto.TransactionDto;
-import org.springframework.stereotype.Component;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.LocalDate;
@@ -27,22 +28,16 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "description")
     private String description;
+    @Column(name = "amount")
     private Double amount;
+    @Column(name = "type")
     private TransactionType type;
+    @Column(name = "date")
     private LocalDate date;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(referencedColumnName = "id", name = "account_id", nullable = false)
     private Account account;
 
-    @Component
-    public static class FromTransationDto {
-        public Transaction apply(TransactionDto transactionDto) {
-            return Transaction.builder()
-                    .description(transactionDto.getDescription())
-                    .amount(transactionDto.getAmount())
-                    .type(TransactionType.valueOf(transactionDto.getType().toUpperCase()))
-                    .date(transactionDto.getDate())
-                    .build();
-        }
-    }
 }

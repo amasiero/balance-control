@@ -2,6 +2,8 @@ package me.amasiero.balancecontrol.service;
 
 import lombok.AllArgsConstructor;
 import me.amasiero.balancecontrol.domain.Account;
+import me.amasiero.balancecontrol.domain.converter.AccountConverter;
+import me.amasiero.balancecontrol.domain.converter.AccountDtoConverter;
 import me.amasiero.balancecontrol.domain.dto.AccountDto;
 import me.amasiero.balancecontrol.exception.AccountNotFoundException;
 import me.amasiero.balancecontrol.repository.AccountRepository;
@@ -16,27 +18,27 @@ import java.util.stream.Collectors;
 public class AccountServiceImpl implements AccountService {
 
     private AccountRepository accountRepository;
-    private AccountDto.FromAccount fromAccount;
-    private Account.FromAccountDto fromAccountDto;
+    private AccountDtoConverter accountDtoConverter;
+    private AccountConverter accountConverter;
 
     @Override
     public Set<AccountDto> getAll() {
         List<Account> accounts = accountRepository.findAll();
         return accounts.stream()
-                .map(fromAccount::apply)
+                .map(accountDtoConverter::apply)
                 .collect(Collectors.toSet());
     }
 
     @Override
     public AccountDto getById(Long id) {
         return accountRepository.findById(id)
-                .map(fromAccount::apply)
+                .map(accountDtoConverter::apply)
                 .orElseThrow(() -> new AccountNotFoundException(id));
     }
 
     @Override
     public AccountDto create(AccountDto accountDto) {
-        Account account = fromAccountDto.apply(accountDto);
-        return fromAccount.apply(accountRepository.save(account));
+        Account account = accountConverter.apply(accountDto);
+        return accountDtoConverter.apply(accountRepository.save(account));
     }
 }

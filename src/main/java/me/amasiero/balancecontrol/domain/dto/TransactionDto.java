@@ -2,8 +2,6 @@ package me.amasiero.balancecontrol.domain.dto;
 
 import lombok.Builder;
 import lombok.Data;
-import me.amasiero.balancecontrol.domain.Transaction;
-import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -19,16 +17,4 @@ public class TransactionDto {
     private String type;
     @Builder.Default
     private LocalDate date = LocalDate.now();
-
-    @Component
-    public static class FromTransaction {
-        public TransactionDto apply(Transaction transaction) {
-            return TransactionDto.builder()
-                    .description(transaction.getDescription())
-                    .amount(transaction.getAmount())
-                    .type(transaction.getType().name())
-                    .date(transaction.getDate())
-                    .build();
-        }
-    }
 }

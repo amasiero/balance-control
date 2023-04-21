@@ -1,4 +1,4 @@
-package me.amasiero.balancecontrol.domain.controller;
+package me.amasiero.balancecontrol.controller;
 
 import lombok.AllArgsConstructor;
 import me.amasiero.balancecontrol.domain.dto.AccountDto;
