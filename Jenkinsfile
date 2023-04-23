@@ -2,17 +2,25 @@ pipeline {
     agent any
 
     stages {
-        stage('build') {
+        stage('test') {
             steps {
-                echo 'building...'
+                echo 'Testing the application'
+                withGradle() {
+                    sh './gradlew test'
+                }
             }
         }
 
-        stage('test') {
+        stage('build') {
             steps {
-                echo 'testing...'
+                echo '### Building the application ###'
+                withGradle() {
+                    sh './gradlew bootJar'
+                }
             }
         }
+
+
 
         stage('deploy') {
             steps {
