@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: ${BC_DB_URL:jdbc:mariadb://localhost:3306/balance_control}
+    url: ${BC_DB_URL:jdbc:mariadb://localhost:3306/balance_control?createDatabaseIfNotExist=true}
     username: ${BC_DB_USER:root}
     password: ${BC_DB_PASS:root}
     driver-class-name: org.mariadb.jdbc.Driver
@@ -17,7 +17,7 @@ spring:
     deserialization:
       fail-on-unknown-properties: false
   flyway:
-    url: ${BC_DB_URL:jdbc:mariadb://localhost:3306/balance_control}
+    url: ${BC_DB_URL:jdbc:mariadb://localhost:3306/balance_control?createDatabaseIfNotExist=true}
     user: ${BC_DB_USER:root}
     password: ${BC_DB_PASS:root}
     baseline-on-migrate: true
